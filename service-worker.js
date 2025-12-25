@@ -1,4 +1,4 @@
-const CACHE_NAME = "calc-cache-v1"; // 
+const CACHE_NAME = "calc-cache-v2"; // Se agregan estilos
 
 self.addEventListener("install", (e) => {
   e.waitUntil(
