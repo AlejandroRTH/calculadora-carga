@@ -66,8 +66,8 @@ function calcular() {
 
   getEl("resultado").textContent =
     `Total a cargar (Tc): ${fmtARS.format(tc)}\n` +
-    `Descuento           : ${fmtARS.format(impD)}\n`+
-    `Solicitar cargar: ${fmtARS.format(imf)}`;
+    `Descuento .........: ${fmtARS.format(impD)}\n`+
+    `Solicitar cargar ..: ${fmtARS.format(imf)}`;
 
   guardarUltimo();
 }
