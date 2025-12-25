@@ -1,4 +1,4 @@
-const CACHE_NAME = "calc-cache-v2"; // Se agregan estilos
+const CACHE_NAME = "calc-cache-v3"; // Se mejora el FrontEnd
 
 self.addEventListener("install", (e) => {
   e.waitUntil(
