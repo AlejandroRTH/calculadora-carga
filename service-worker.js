@@ -1,17 +1,35 @@
-self.addEventListener("install", e => {
+const CACHE_NAME = "calc-cache-v1"; // 
+
+self.addEventListener("install", (e) => {
   e.waitUntil(
-    caches.open("calc-cache").then(cache =>
+    caches.open(CACHE_NAME).then((cache) =>
       cache.addAll([
+        "./",
         "index.html",
         "app.js",
         "manifest.json"
       ])
     )
   );
+  self.skipWaiting(); // fuerza a usar el nuevo SW
 });
 
-self.addEventListener("fetch", e => {
+self.addEventListener("activate", (e) => {
+  e.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys
+          .filter((k) => k !== CACHE_NAME)
+          .map((k) => caches.delete(k))
+      )
+    )
+  );
+  self.clients.claim(); // toma control inmediato
+});
+
+self.addEventListener("fetch", (e) => {
   e.respondWith(
-    caches.match(e.request).then(resp => resp || fetch(e.request))
+    caches.match(e.request).then((resp) => resp || fetch(e.request))
   );
 });
+
