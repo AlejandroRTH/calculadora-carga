@@ -61,7 +61,7 @@ function calcular() {
   }
 
   const tc = ld * pl;
-  const imf = tc / (1 - d / 100);
+  const imf = tc / (1 - (d / 100));
 
   getEl("resultado").textContent =
     `Total a cargar (Tc): ${fmtARS.format(tc)}\n` +
