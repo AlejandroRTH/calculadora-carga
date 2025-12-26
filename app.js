@@ -102,7 +102,7 @@ function calcular() {
   const importeFinal = totalCarga / (1 - d / 100);
 
   const texto =
-    `Total a cargar (Tc): ${formatoMoneda.format(totalCarga)}\n` +
+    `Total a cargar ....: ${formatoMoneda.format(totalCarga)}\n` +
     `Descuento .........: ${formatoMoneda.format(importeDescuento)}\n` +
     `Total .............: ${formatoMoneda.format(totalCarga - importeDescuento)}\n` +
     `Solicitar cargar ..: ${formatoMoneda.format(importeFinal)}`;

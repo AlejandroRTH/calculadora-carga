@@ -1,4 +1,4 @@
-const CACHE_NAME = "calc-cache-v4"; // Refino el cálculo
+const CACHE_NAME = "calc-cache-v5"; // Subo lo iconos
 
 self.addEventListener("install", (e) => {
   e.waitUntil(
