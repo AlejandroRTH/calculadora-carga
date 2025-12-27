@@ -2,7 +2,7 @@
  * Configuración
  ******************************/
 
-const STORAGE_KEY = "calc_carga_ultimos_valores_v1";
+const STORAGE_KEY_D = "calc_carga_ultimos_valores_v1";
 
 // Formato moneda ARS
 const formatoMoneda = new Intl.NumberFormat("es-AR", {
@@ -16,8 +16,7 @@ const formatoMoneda = new Intl.NumberFormat("es-AR", {
  * Acceso a la interfaz
  ******************************/
 
-const inputIMPfinal    = document.getElementById("ld");
-const inputPrecio    = document.getElementById("pl");
+const inputMonto    = document.getElementById("ld");
 const inputDescuento = document.getElementById("d");
 const salida         = document.getElementById("resultado");
 
@@ -46,23 +45,21 @@ function mostrarMensaje(texto) {
  * Persistencia (localStorage)
  ******************************/
 
-function guardarValores(ld, pl, d) {
+function guardarValores(ld, d) {
   const datos = {
     ld: ld,
-    pl: pl,
     d:  d
   };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(datos));
+  localStorage.setItem(STORAGE_KEY_D, JSON.stringify(datos));
 }
 
 function cargarValores() {
-  const raw = localStorage.getItem(STORAGE_KEY);
+  const raw = localStorage.getItem(STORAGE_KEY_D);
   if (!raw) return;
 
   try {
     const datos = JSON.parse(raw);
     if (datos.ld !== undefined) inputIMPfinal.value = datos.ld;
-    if (datos.pl !== undefined) inputPrecio.value = datos.pl;
     if (datos.d  !== undefined) inputDescuento.value = datos.d;
   } catch {
     // si está roto, no hacemos nada
@@ -71,10 +68,9 @@ function cargarValores() {
 
 function limpiarValores() {
   inputIMPfinal.value = "";
-  inputPrecio.value = "";
   inputDescuento.value = "20";
   salida.textContent = "";
-  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(STORAGE_KEY_D);
 }
 
 
@@ -84,10 +80,9 @@ function limpiarValores() {
 
 function calcular() {
   const ld = leerNumero(inputIMPfinal);
-  const pl = leerNumero(inputPrecio);
   const d  = leerNumero(inputDescuento);
 
-  if (ld === null || pl === null || d === null) {
+  if (ld === null || d === null) {
     mostrarMensaje("Verificá los valores ingresados.");
     return;
   }
@@ -97,18 +92,18 @@ function calcular() {
     return;
   }
 
-  const totalCarga = ld * pl;
-  const importeDescuento = totalCarga * (d / 100);
-  const importeFinal = totalCarga / (1 - d / 100);
+  const importe = inputMonto;
+  const descuento = 1 - (d / 100);
+  const importeSinDesc = importe / descuento;
 
   const texto =
-    `Total a cargar ....: ${formatoMoneda.format(totalCarga)}\n` +
-    `Descuento .........: ${formatoMoneda.format(importeDescuento)}\n` +
-    `Total .............: ${formatoMoneda.format(totalCarga - importeDescuento)}\n` +
-    `Solicitar cargar ..: ${formatoMoneda.format(importeFinal)}`;
+    `Total a cargar ....: ${formatoMoneda.format(importeSinDesc)}\n` +
+    `Descuento .........: ${formatoMoneda.format(d)}\n` +
+    `Total .............: ${formatoMoneda.format(importe)}\n`;
+    
 
   mostrarMensaje(texto);
-  guardarValores(ld, pl, d);
+  guardarValores(ld, d);
 }
 
 
@@ -119,7 +114,7 @@ function calcular() {
 botonCalcular.addEventListener("click", calcular);
 botonLimpiar.addEventListener("click", limpiarValores);
 
-[inputIMPfinal, inputPrecio, inputDescuento].forEach(input => {
+[inputIMPfinal, inputDescuento].forEach(input => {
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       calcular();
@@ -135,5 +130,5 @@ botonLimpiar.addEventListener("click", limpiarValores);
 cargarValores();
 
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
+  navigator.serviceWorker.register("service-worker2.js");
 }
