@@ -2,13 +2,19 @@
  * Configuración
  ******************************/
 
-const STORAGE_KEY_D = "calc_carga_ultimos_valores_v1";
+const STORAGE_KEY_D = "calc_dto_ultimos_valores_v1";
 
 // Formato moneda ARS
 const formatoMoneda = new Intl.NumberFormat("es-AR", {
   style: "currency",
   currency: "ARS",
   maximumFractionDigits: 2
+});
+
+// Formato Porcentaje
+const formatoP = new Intl.NumberFormat("es-AR", {
+  style: "percent",
+  maximumFractionDigits: 1
 });
 
 
@@ -59,7 +65,7 @@ function cargarValores() {
 
   try {
     const datos = JSON.parse(raw);
-    if (datos.ld !== undefined) inputIMPfinal.value = datos.ld;
+    if (datos.ld !== undefined) inputMonto.value = datos.ld;
     if (datos.d  !== undefined) inputDescuento.value = datos.d;
   } catch {
     // si está roto, no hacemos nada
@@ -67,8 +73,8 @@ function cargarValores() {
 }
 
 function limpiarValores() {
-  inputIMPfinal.value = "";
-  inputDescuento.value = "20";
+  inputMonto.value = "";
+  inputDescuento.value = "";
   salida.textContent = "";
   localStorage.removeItem(STORAGE_KEY_D);
 }
@@ -79,7 +85,7 @@ function limpiarValores() {
  ******************************/
 
 function calcular() {
-  const ld = leerNumero(inputIMPfinal);
+  const ld = leerNumero(inputMonto);
   const d  = leerNumero(inputDescuento);
 
   if (ld === null || d === null) {
@@ -92,14 +98,15 @@ function calcular() {
     return;
   }
 
-  const importe = inputMonto;
+  const importe = ld;
   const descuento = 1 - (d / 100);
-  const importeSinDesc = importe / descuento;
+  const importeSinDesc = ld / descuento;
 
   const texto =
-    `Total a cargar ....: ${formatoMoneda.format(importeSinDesc)}\n` +
-    `Descuento .........: ${formatoMoneda.format(d)}\n` +
-    `Total .............: ${formatoMoneda.format(importe)}\n`;
+    // `Total a cargar ....: ${formatoMoneda.format(importeSinDesc)}\n` +
+    `Solicitar carga por ..: ${formatoMoneda.format(importeSinDesc)}\n` +
+    `Descuento del ........: ${formatoP.format(d * 10)}\n` +
+    `Total a pagar.........: ${formatoMoneda.format(importe)}\n`;
     
 
   mostrarMensaje(texto);
@@ -114,7 +121,7 @@ function calcular() {
 botonCalcular.addEventListener("click", calcular);
 botonLimpiar.addEventListener("click", limpiarValores);
 
-[inputIMPfinal, inputDescuento].forEach(input => {
+[inputMonto, inputDescuento].forEach(input => {
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       calcular();
