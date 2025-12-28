@@ -1,13 +1,14 @@
-const CACHE_NAME = "desc-cache-v1"; // Subo lo iconos
+const CACHE_NAME = "calc-cache-v1"; // Nueva estructura
 
 self.addEventListener("install", (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) =>
       cache.addAll([
         "./",
-        "descuento.html",
-        "appd.js",
-        "Percent-manifiest.json"
+        "index.html",
+        "app.js",
+        "style.css",
+        "manifest.json"
       ])
     )
   );

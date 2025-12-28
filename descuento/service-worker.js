@@ -1,4 +1,4 @@
-const CACHE_NAME = "calc-cache-v5"; // Subo lo iconos
+const CACHE_NAME = "desc-cache-v1"; // Subo lo iconos
 
 self.addEventListener("install", (e) => {
   e.waitUntil(
@@ -7,6 +7,7 @@ self.addEventListener("install", (e) => {
         "./",
         "index.html",
         "app.js",
+        "style.css",
         "manifest.json"
       ])
     )
