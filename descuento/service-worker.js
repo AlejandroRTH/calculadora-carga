@@ -1,4 +1,4 @@
-const CACHE_NAME = "desc-cache-v1"; // Subo lo iconos
+const CACHE_NAME = "desc-cache-v2"; // Subo lo iconos
 
 self.addEventListener("install", (e) => {
   e.waitUntil(
